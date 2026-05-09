@@ -163,40 +163,6 @@ function createWhatsAppMessage(userName, userPhone, userAddress) {
 
 function cleanPhone(phone) { return String(phone).replace(/\D/g, ""); }
 
-function applyHeaderScrollEffect() {
-  const hero = document.getElementById("hero");
-  const header = document.getElementById("site-header");
-  if (!hero || !header) return;
-  const maxScroll = 220;
-  const progress = Math.min(window.scrollY / maxScroll, 1);
-  hero.style.maxHeight = `${240 - 170 * progress}px`;
-  hero.style.opacity = `${1 - progress * 0.95}`;
-  hero.style.transform = `translateY(${-8 * progress}px) scale(${1 - 0.03 * progress})`;
-  hero.style.marginTop = `${10 - 8 * progress}px`;
-  hero.style.paddingTop = `${12 - 7 * progress}px`;
-  hero.style.paddingBottom = `${12 - 7 * progress}px`;
-  header.style.boxShadow = progress > 0.1 ? "0 6px 18px rgba(0,0,0,.08)" : "none";
-}
-
-function setupAddressLink() {
-  const el = document.getElementById("address-link");
-  if (!el) return;
-  el.addEventListener("click", (e) => {
-    e.preventDefault();
-    const encoded = encodeURIComponent(ADDRESS_TEXT);
-    const ua = navigator.userAgent.toLowerCase();
-    const isMobile = /android|iphone|ipad|ipod/.test(ua);
-    if (isMobile) {
-      window.location.href = `geo:0,0?q=${encoded}`;
-      setTimeout(() => {
-        window.open(`https://maps.google.com/?q=${encoded}`, "_blank");
-      }, 500);
-    } else {
-      window.open(`https://maps.google.com/?q=${encoded}`, "_blank");
-    }
-  });
-}
-
 async function loadMenu() {
   const grid = document.getElementById("menu-grid");
   try {
@@ -258,20 +224,7 @@ document.getElementById("cart-modal").addEventListener("click", (e) => { if (e.t
 document.getElementById("promo-apply").addEventListener("click", applyPromoCode);
 document.getElementById("promo-code").addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); applyPromoCode(); } });
 
-let scrollTicking = false;
-window.addEventListener("scroll", () => {
-  if (scrollTicking) return;
-  scrollTicking = true;
-  requestAnimationFrame(() => {
-    const topBtn = document.getElementById("to-top");
-    if (window.scrollY > 380) topBtn.classList.add("show");
-    else topBtn.classList.remove("show");
-    applyHeaderScrollEffect();
-    scrollTicking = false;
-  });
-});
-
-document.getElementById("order-form").addEventListener("submit", (e) => {
+window.addEventListener("scroll", () => {`n  const topBtn = document.getElementById("to-top");`n  const header = document.getElementById("site-header");`n  if (window.scrollY > 380) topBtn.classList.add("show"); else topBtn.classList.remove("show");`n  if (window.scrollY > 120) header.classList.add("scrolled"); else header.classList.remove("scrolled");`n});`n`ndocument.getElementById("order-form").addEventListener("submit", (e) => {
   e.preventDefault();
   if (!cart.length) return alert("Корзина пустая. Добавьте блюда.");
 
@@ -306,7 +259,8 @@ if (promo.code) {
   document.getElementById("promo-code").value = promo.code;
   document.getElementById("promo-hint").textContent = "Промокод применен";
 }
-setupAddressLink();
-applyHeaderScrollEffect();
+
+
+
 
 

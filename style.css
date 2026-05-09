@@ -83,3 +83,6 @@ body{margin:0;font-family:"Segoe UI","Arial",sans-serif;color:var(--black);backg
 @keyframes slideUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 @keyframes popIn{from{transform:scale(.96);opacity:.7}to{transform:scale(1);opacity:1}}
 
+
+.header.scrolled .hero{max-height:0;opacity:0;padding-top:0;padding-bottom:0;margin-top:0;transform:translateY(-6px)}
+.header.scrolled .logo{transform:scale(.92)}
