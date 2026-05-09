@@ -1,5 +1,4 @@
 const CONFIG = {
     whatsappNumber: "77064069814",
-    // Сюда вставь ту длинную ссылку на CSV из Гугл Таблиц (Шаг 2 из прошлого сообщения)
-    csvUrl: "ССЫЛКА_ТУТ" 
+    csvUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vT3joTj2hKkKgH3WJ0tMISWQeXtbb7aPA85HMAqV54F1gWPp-HNWPJ1TjegOGq85E6eFBKcjl0X_cXN/pub?output=csv"
 };
