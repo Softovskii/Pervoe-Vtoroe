@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Доставка еды</title>
-  <link rel="stylesheet" href="style.css?v=10" />
+  <link rel="stylesheet" href="style.css?v=11" />
 </head>
 <body>
   <header id="site-header" class="header">
@@ -32,17 +32,11 @@
 
   <footer class="site-footer">
     <div class="container footer-inner">
-      <a class="footer-link" href="geo:0,0?q=Интернациональная улица, 67, Петропавловск, Северо-Казахстанская область">
+      <a id="address-link" class="footer-link" href="#">
         Интернациональная улица, 67, Петропавловск, Северо-Казахстанская область
       </a>
       <a class="review-link" href="https://go.2gis.com/nJoY6" target="_blank" rel="noopener noreferrer">
-        <svg class="logo-2gis" viewBox="0 0 64 64" aria-hidden="true">
-          <rect x="1" y="1" width="62" height="62" rx="14" fill="#fff" />
-          <path d="M6 12 L58 20 L58 8 Q58 4 54 4 L10 4 Q6 4 6 8 Z" fill="#f7b718"/>
-          <path d="M6 22 L58 28 L58 48 L6 56 Z" fill="#1fb51f"/>
-          <path d="M6 56 L58 48 L58 56 Q58 60 54 60 L10 60 Q6 60 6 56 Z" fill="#7ddc00"/>
-          <circle cx="32" cy="33" r="13" fill="#1a73e8" stroke="#fff" stroke-width="3"/>
-        </svg>
+        <img class="logo-2gis" src="https://upload.wikimedia.org/wikipedia/commons/1/18/2GIS_logo_icon.png" alt="2ГИС" />
         <span>Будем рады вашим отзывам</span>
       </a>
     </div>
@@ -64,7 +58,21 @@
       </div>
 
       <div id="cart-items" class="cart-items"></div>
-      <div class="cart-total">Итого: <span id="total-amount">0</span> ₸</div>
+
+      <div class="promo-block">
+        <label for="promo-code">Промокод (необязательно)</label>
+        <div class="promo-row">
+          <input id="promo-code" type="text" placeholder="Введите промокод" />
+          <button id="promo-apply" type="button">Применить</button>
+        </div>
+        <p id="promo-hint" class="promo-hint"></p>
+      </div>
+
+      <div class="totals-box">
+        <div class="totals-row"><span>Сумма</span><strong id="subtotal-amount">0 ₸</strong></div>
+        <div class="totals-row"><span>Скидка</span><strong id="discount-amount">0 ₸</strong></div>
+        <div class="cart-total">Итого: <span id="total-amount">0</span> ₸</div>
+      </div>
 
       <form id="order-form" class="order-form">
         <h3>Данные для доставки</h3>
@@ -84,7 +92,7 @@
     </div>
   </div>
 
-  <script src="config.js?v=10"></script>
-  <script src="script.js?v=10"></script>
+  <script src="config.js?v=11"></script>
+  <script src="script.js?v=11"></script>
 </body>
 </html>
