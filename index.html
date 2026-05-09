@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Доставка еды</title>
-  <link rel="stylesheet" href="style.css?v=5" />
+  <link rel="stylesheet" href="style.css?v=8" />
 </head>
 <body>
   <header class="header">
@@ -31,6 +31,26 @@
     </section>
   </main>
 
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p class="footer-title">Наша столовая</p>
+      <a
+        class="footer-link"
+        href="https://maps.google.com/?q=Интернациональная+улица,+67,+Петропавловск,+Северо-Казахстанская+область"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Интернациональная улица, 67, Петропавловск, Северо-Казахстанская область
+      </a>
+      <a class="review-link" href="https://go.2gis.com/nJoY6" target="_blank" rel="noopener noreferrer">
+        2ГИС: Будем рады вашим отзывам
+      </a>
+    </div>
+  </footer>
+
+  <div id="toast" class="toast" aria-live="polite"></div>
+  <button id="to-top" class="to-top" type="button" aria-label="Наверх">↑</button>
+
   <button id="cart-button" class="cart-button" type="button">
     <span>Корзина</span>
     <span id="cart-count" class="cart-count">0</span>
@@ -56,7 +76,15 @@
     </div>
   </div>
 
-  <script src="config.js?v=5"></script>
-  <script src="script.js?v=5"></script>
+  <div id="thanks-modal" class="thanks-modal" aria-hidden="true">
+    <div class="thanks-card">
+      <h3>Спасибо за заказ!</h3>
+      <p>Мы уже получили вашу заявку. Ждем вас снова.</p>
+      <button id="thanks-close" type="button">Отлично</button>
+    </div>
+  </div>
+
+  <script src="config.js?v=8"></script>
+  <script src="script.js?v=8"></script>
 </body>
 </html>
