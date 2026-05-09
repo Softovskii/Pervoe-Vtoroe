@@ -59,8 +59,8 @@ function applyPromoCode() {
 }
 
 function getCartQty(name) { const found = cart.find((x) => x.name === name); return found ? found.qty : 0; }
-function openCart() { document.getElementById("cart-modal").classList.add("show"); }
-function closeCart() { document.getElementById("cart-modal").classList.remove("show"); }
+function openCart() { document.getElementById("cart-modal").classList.add("show"); document.body.classList.add("no-scroll"); }
+function closeCart() { document.getElementById("cart-modal").classList.remove("show"); document.body.classList.remove("no-scroll"); }
 function showThanksModal() { const el = document.getElementById("thanks-modal"); if (el) el.classList.add("show" ); }
 function hideThanksModal() { const el = document.getElementById("thanks-modal"); if (el) el.classList.remove("show"); }
 
@@ -258,11 +258,17 @@ document.getElementById("cart-modal").addEventListener("click", (e) => { if (e.t
 document.getElementById("promo-apply").addEventListener("click", applyPromoCode);
 document.getElementById("promo-code").addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); applyPromoCode(); } });
 
+let scrollTicking = false;
 window.addEventListener("scroll", () => {
-  const topBtn = document.getElementById("to-top");
-  if (window.scrollY > 380) topBtn.classList.add("show");
-  else topBtn.classList.remove("show");
-  applyHeaderScrollEffect();
+  if (scrollTicking) return;
+  scrollTicking = true;
+  requestAnimationFrame(() => {
+    const topBtn = document.getElementById("to-top");
+    if (window.scrollY > 380) topBtn.classList.add("show");
+    else topBtn.classList.remove("show");
+    applyHeaderScrollEffect();
+    scrollTicking = false;
+  });
 });
 
 document.getElementById("order-form").addEventListener("submit", (e) => {
@@ -302,3 +308,5 @@ if (promo.code) {
 }
 setupAddressLink();
 applyHeaderScrollEffect();
+
+
