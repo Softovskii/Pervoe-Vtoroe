@@ -1,7 +1,7 @@
 ﻿let menuData = [];
 let cart = [];
 let activeCategory = "Все";
-const placeholderImage = "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=900&q=80";
+const placeholderImage = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='500'%3E%3Crect width='100%25' height='100%25' fill='%23f2f2f2'/%3E%3Ctext x='50%25' y='50%25' fill='%23888888' font-size='30' text-anchor='middle' dominant-baseline='middle'%3EНет фото%3C/text%3E%3C/svg%3E";
 
 function parseCsvLine(line) {
   const result = [];
@@ -44,6 +44,23 @@ function escapeHtml(value) {
     .replace(/'/g, "&#39;");
 }
 
+function normalizePhotoUrl(rawUrl) {
+  const url = String(rawUrl || "").trim();
+  if (!url) return "";
+
+  const driveFileMatch = url.match(/drive\.google\.com\/file\/d\/([^/]+)/i);
+  if (driveFileMatch && driveFileMatch[1]) {
+    return `https://drive.google.com/thumbnail?id=${driveFileMatch[1]}&sz=w1200`;
+  }
+
+  const driveIdMatch = url.match(/[?&]id=([^&]+)/i);
+  if (driveIdMatch && /drive\.google\.com/i.test(url)) {
+    return `https://drive.google.com/thumbnail?id=${driveIdMatch[1]}&sz=w1200`;
+  }
+
+  return url;
+}
+
 function openCart() {
   document.getElementById("cart-modal").classList.add("show");
 }
@@ -66,13 +83,7 @@ function addToCart(item) {
   if (found) {
     found.qty += 1;
   } else {
-    cart.push({
-      name: item.name,
-      price: item.price,
-      qty: 1,
-      weight: item.weight,
-      calories: item.calories
-    });
+    cart.push({ name: item.name, price: item.price, qty: 1, weight: item.weight, calories: item.calories });
   }
   renderCart();
 }
@@ -119,10 +130,7 @@ function renderCategories() {
 function renderMenu() {
   const grid = document.getElementById("menu-grid");
 
-  const filtered =
-    activeCategory === "Все"
-      ? menuData
-      : menuData.filter((item) => item.category === activeCategory);
+  const filtered = activeCategory === "Все" ? menuData : menuData.filter((item) => item.category === activeCategory);
 
   if (filtered.length === 0) {
     grid.innerHTML = '<p class="status">В этой категории пока нет блюд.</p>';
@@ -135,7 +143,7 @@ function renderMenu() {
       <article class="food-card">
         <img
           class="food-image"
-          src="${escapeHtml(item.photo || placeholderImage)}"
+          src="${escapeHtml(normalizePhotoUrl(item.photo) || placeholderImage)}"
           alt="${escapeHtml(item.name)}"
           loading="lazy"
           onerror="this.src='${placeholderImage}'"
@@ -211,9 +219,7 @@ function renderCart() {
 }
 
 function createWhatsAppMessage(userName, userPhone, userAddress) {
-  const orderLines = cart
-    .map((item) => `- ${item.name} x${item.qty} \"${money(item.price * item.qty)}\"`)
-    .join("\n");
+  const orderLines = cart.map((item) => `- ${item.name} x${item.qty} \"${money(item.price * item.qty)}\"`).join("\n");
   const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
 
   return `Здравствуйте!\nХочу оформить заказ.\nИмя: ${userName}\nТелефон: ${userPhone}\nАдрес: ${userAddress}\nЗаказ:\n${orderLines}\n\nИтого: ${money(total)}`;
