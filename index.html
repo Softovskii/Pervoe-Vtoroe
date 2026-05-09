@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Доставка еды</title>
-  <link rel="stylesheet" href="style.css?v=9" />
+  <link rel="stylesheet" href="style.css?v=10" />
 </head>
 <body>
   <header id="site-header" class="header">
@@ -12,13 +12,12 @@
       <div class="brand-row">
         <h1 class="logo">Первое-<span>Второе</span></h1>
       </div>
-      <section class="hero">
+      <section id="hero" class="hero">
         <p class="hero-title">Домашняя еда с доставкой</p>
         <p class="hero-subtitle">Выберите блюдо, добавьте в корзину и отправьте заказ в WhatsApp за 1 минуту.</p>
         <div class="hero-badges">
           <span class="hero-badge">Свежие блюда</span>
           <span class="hero-badge">Быстрая доставка</span>
-          <span class="hero-badge">Без звонков</span>
         </div>
       </section>
       <nav id="categories" class="categories"></nav>
@@ -33,15 +32,17 @@
 
   <footer class="site-footer">
     <div class="container footer-inner">
-      <p class="footer-title">Наша столовая</p>
-      <a
-        class="footer-link"
-        href="geo:0,0?q=Интернациональная улица, 67, Петропавловск, Северо-Казахстанская область"
-      >
+      <a class="footer-link" href="geo:0,0?q=Интернациональная улица, 67, Петропавловск, Северо-Казахстанская область">
         Интернациональная улица, 67, Петропавловск, Северо-Казахстанская область
       </a>
       <a class="review-link" href="https://go.2gis.com/nJoY6" target="_blank" rel="noopener noreferrer">
-        <span class="logo-2gis">2ГИС</span>
+        <svg class="logo-2gis" viewBox="0 0 64 64" aria-hidden="true">
+          <rect x="1" y="1" width="62" height="62" rx="14" fill="#fff" />
+          <path d="M6 12 L58 20 L58 8 Q58 4 54 4 L10 4 Q6 4 6 8 Z" fill="#f7b718"/>
+          <path d="M6 22 L58 28 L58 48 L6 56 Z" fill="#1fb51f"/>
+          <path d="M6 56 L58 48 L58 56 Q58 60 54 60 L10 60 Q6 60 6 56 Z" fill="#7ddc00"/>
+          <circle cx="32" cy="33" r="13" fill="#1a73e8" stroke="#fff" stroke-width="3"/>
+        </svg>
         <span>Будем рады вашим отзывам</span>
       </a>
     </div>
@@ -83,7 +84,7 @@
     </div>
   </div>
 
-  <script src="config.js?v=9"></script>
-  <script src="script.js?v=9"></script>
+  <script src="config.js?v=10"></script>
+  <script src="script.js?v=10"></script>
 </body>
 </html>

@@ -108,12 +108,30 @@ function updateCartButton() {
   btn.style.display = count > 0 ? "inline-flex" : "none";
 }
 
+function updateMenuControls() {
+  document.querySelectorAll("[data-item-name]").forEach((card) => {
+    const name = card.dataset.itemName;
+    const controls = card.querySelector(".item-controls");
+    if (!controls) return;
+
+    const item = menuData.find((x) => x.name === name);
+    if (!item) return;
+    const qty = getCartQty(name);
+
+    controls.innerHTML = qty > 0
+      ? `<div class="qty-inline"><button class="card-minus" data-name="${escapeHtml(name)}">-</button><span>${qty}</span><button class="card-plus" data-name="${escapeHtml(name)}">+</button></div>`
+      : `<button class="btn-add" data-name="${escapeHtml(name)}">Добавить</button>`;
+  });
+
+  bindMenuControlEvents();
+}
+
 function addToCart(item) {
   const found = cart.find((x) => x.name === item.name);
   if (found) found.qty += 1;
   else cart.push({ name: item.name, price: item.price, qty: 1, weight: item.weight, calories: item.calories });
   renderCart();
-  renderMenu();
+  updateMenuControls();
   saveCart();
   showToast(`${item.name} добавлено в корзину`);
 }
@@ -124,14 +142,14 @@ function changeQty(name, delta) {
   found.qty += delta;
   if (found.qty <= 0) cart = cart.filter((x) => x.name !== name);
   renderCart();
-  renderMenu();
+  updateMenuControls();
   saveCart();
 }
 
 function removeFromCart(name) {
   cart = cart.filter((x) => x.name !== name);
   renderCart();
-  renderMenu();
+  updateMenuControls();
   saveCart();
 }
 
@@ -148,6 +166,32 @@ function renderCategories() {
   });
 }
 
+function buildControlsHtml(name) {
+  const qty = getCartQty(name);
+  return qty > 0
+    ? `<div class="qty-inline"><button class="card-minus" data-name="${escapeHtml(name)}">-</button><span>${qty}</span><button class="card-plus" data-name="${escapeHtml(name)}">+</button></div>`
+    : `<button class="btn-add" data-name="${escapeHtml(name)}">Добавить</button>`;
+}
+
+function bindMenuControlEvents() {
+  const grid = document.getElementById("menu-grid");
+
+  grid.querySelectorAll(".btn-add").forEach((btn) => {
+    btn.onclick = () => {
+      const item = menuData.find((x) => x.name === btn.dataset.name);
+      if (item) addToCart(item);
+    };
+  });
+
+  grid.querySelectorAll(".card-plus").forEach((btn) => {
+    btn.onclick = () => changeQty(btn.dataset.name, 1);
+  });
+
+  grid.querySelectorAll(".card-minus").forEach((btn) => {
+    btn.onclick = () => changeQty(btn.dataset.name, -1);
+  });
+}
+
 function renderMenu() {
   const grid = document.getElementById("menu-grid");
   const filtered = activeCategory === "Все" ? menuData : menuData.filter((item) => item.category === activeCategory);
@@ -157,19 +201,14 @@ function renderMenu() {
   }
 
   grid.innerHTML = filtered.map((item, index) => {
-    const qty = getCartQty(item.name);
     const categoryHtml = item.category ? `<p class="food-category">${item.category}</p>` : "";
     const metaParts = [];
     if (item.weight) metaParts.push(item.weight);
     if (item.calories) metaParts.push(`${item.calories} ккал`);
     const metaHtml = metaParts.length ? `<p class="food-meta">${metaParts.join(" • ")}</p>` : "";
 
-    const controlHtml = qty > 0
-      ? `<div class="qty-inline"><button class="card-minus" data-name="${escapeHtml(item.name)}">-</button><span>${qty}</span><button class="card-plus" data-name="${escapeHtml(item.name)}">+</button></div>`
-      : `<button class="btn-add" data-name="${escapeHtml(item.name)}">Добавить</button>`;
-
     return `
-      <article class="food-card" style="animation-delay:${index * 0.06}s">
+      <article class="food-card" data-item-name="${escapeHtml(item.name)}" style="animation-delay:${index * 0.06}s">
         <img class="food-image" src="${escapeHtml(normalizePhotoUrl(item.photo) || placeholderImage)}" alt="${escapeHtml(item.name)}" loading="lazy" onerror="this.src='${placeholderImage}'" />
         <div>
           <h3 class="food-title">${item.name}</h3>
@@ -178,26 +217,13 @@ function renderMenu() {
         </div>
         <div class="food-footer">
           <div class="food-price">${money(item.price)}</div>
-          ${controlHtml}
+          <div class="item-controls">${buildControlsHtml(item.name)}</div>
         </div>
       </article>
     `;
   }).join("");
 
-  grid.querySelectorAll(".btn-add").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const item = menuData.find((x) => x.name === btn.dataset.name);
-      if (item) addToCart(item);
-    });
-  });
-
-  grid.querySelectorAll(".card-plus").forEach((btn) => {
-    btn.addEventListener("click", () => changeQty(btn.dataset.name, 1));
-  });
-
-  grid.querySelectorAll(".card-minus").forEach((btn) => {
-    btn.addEventListener("click", () => changeQty(btn.dataset.name, -1));
-  });
+  bindMenuControlEvents();
 }
 
 function renderCart() {
@@ -239,6 +265,19 @@ function createWhatsAppMessage(userName, userPhone, userAddress) {
 
 function cleanPhone(phone) {
   return String(phone).replace(/\D/g, "");
+}
+
+function applyHeaderScrollEffect() {
+  const hero = document.getElementById("hero");
+  if (!hero) return;
+
+  const maxScroll = 170;
+  const progress = Math.min(window.scrollY / maxScroll, 1);
+  hero.style.maxHeight = `${240 * (1 - progress)}px`;
+  hero.style.opacity = `${1 - progress}`;
+  hero.style.marginTop = `${10 * (1 - progress)}px`;
+  hero.style.paddingTop = `${12 * (1 - progress)}px`;
+  hero.style.paddingBottom = `${12 * (1 - progress)}px`;
 }
 
 async function loadMenu() {
@@ -315,12 +354,9 @@ document.getElementById("cart-modal").addEventListener("click", (e) => {
 
 window.addEventListener("scroll", () => {
   const topBtn = document.getElementById("to-top");
-  const header = document.getElementById("site-header");
   if (window.scrollY > 380) topBtn.classList.add("show");
   else topBtn.classList.remove("show");
-
-  if (window.scrollY > 40) header.classList.add("compact");
-  else header.classList.remove("compact");
+  applyHeaderScrollEffect();
 });
 
 document.getElementById("order-form").addEventListener("submit", (e) => {
@@ -348,7 +384,7 @@ document.getElementById("order-form").addEventListener("submit", (e) => {
   cart = [];
   saveCart();
   renderCart();
-  renderMenu();
+  updateMenuControls();
   document.getElementById("order-form").reset();
   closeCart();
   showThanksModal();
@@ -357,3 +393,4 @@ document.getElementById("order-form").addEventListener("submit", (e) => {
 loadCart();
 loadMenu();
 renderCart();
+applyHeaderScrollEffect();

@@ -24,19 +24,10 @@ body {
   background: rgba(255, 255, 255, 0.92);
   border-bottom: 1px solid var(--line);
   backdrop-filter: blur(8px);
-  transition: padding 0.22s ease, background 0.22s ease;
 }
 
 .brand-row { display: flex; align-items: center; justify-content: space-between; }
-
-.logo {
-  margin: 0;
-  font-size: 30px;
-  font-weight: 900;
-  letter-spacing: 0.2px;
-  transition: font-size 0.22s ease;
-}
-
+.logo { margin: 0; font-size: 30px; font-weight: 900; letter-spacing: 0.2px; }
 .logo span { color: var(--red); }
 
 .hero {
@@ -47,22 +38,13 @@ body {
   color: var(--white);
   max-height: 240px;
   overflow: hidden;
-  opacity: 1;
-  transition: max-height 0.25s ease, opacity 0.2s ease, padding 0.2s ease, margin-top 0.2s ease;
+  transform-origin: top;
 }
 
 .hero-title { margin: 0; font-size: 17px; font-weight: 800; }
 .hero-subtitle { margin: 6px 0 0; font-size: 13px; color: #dfdfdf; }
 .hero-badges { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 8px; }
 .hero-badge { font-size: 12px; font-weight: 700; padding: 6px 10px; border-radius: 999px; background: rgba(255, 255, 255, 0.14); }
-
-.header.compact .logo { font-size: 24px; }
-.header.compact .hero {
-  margin-top: 6px;
-  padding: 8px 10px;
-  max-height: 0;
-  opacity: 0;
-}
 
 .categories { display: flex; gap: 8px; overflow-x: auto; padding: 12px 0 4px; }
 .category-btn {
@@ -109,10 +91,12 @@ body {
   font-weight: 800;
 }
 
+.item-controls { min-width: 128px; display: flex; justify-content: flex-end; }
+
 .qty-inline {
   display: inline-flex;
   align-items: center;
-  background: #222;
+  background: #252525;
   border-radius: 12px;
   overflow: hidden;
 }
@@ -121,25 +105,23 @@ body {
   border: none;
   background: transparent;
   color: #fff;
-  width: 34px;
-  height: 36px;
-  font-size: 20px;
+  width: 36px;
+  height: 38px;
+  font-size: 22px;
   cursor: pointer;
 }
 
 .qty-inline span {
-  min-width: 32px;
+  min-width: 30px;
   text-align: center;
   color: #fff;
   font-weight: 700;
-  font-size: 16px;
 }
 
 .status { color: #666; }
 
 .site-footer { margin-top: 8px; background: #121212; color: var(--white); border-top: 2px solid #2a2a2a; }
 .footer-inner { padding-top: 16px; padding-bottom: 110px; }
-.footer-title { margin: 0 0 8px; font-size: 17px; font-weight: 800; }
 .footer-link { display: inline-block; color: #f0f0f0; text-decoration: none; border-bottom: 1px dashed rgba(255, 255, 255, 0.35); padding-bottom: 2px; }
 .footer-link:hover { color: var(--white); }
 
@@ -157,16 +139,10 @@ body {
 }
 
 .logo-2gis {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 38px;
+  width: 22px;
   height: 22px;
   border-radius: 6px;
-  background: #11a952;
-  color: #fff;
-  font-size: 11px;
-  font-weight: 900;
+  flex: 0 0 auto;
 }
 
 .cart-button { position: fixed; left: 50%; transform: translateX(-50%); bottom: 14px; z-index: 40; border: none; border-radius: 999px; background: var(--red); color: var(--white); padding: 12px 18px; font-size: 15px; font-weight: 700; display: none; align-items: center; gap: 10px; box-shadow: 0 10px 24px rgba(227, 27, 35, 0.35); }
@@ -207,7 +183,6 @@ body {
   .menu-grid { grid-template-columns: 1fr 1fr; }
   .food-image { height: 200px; }
   .footer-inner { padding-bottom: 32px; }
-  .header.compact .hero { max-height: 50px; opacity: 1; }
 }
 
 @keyframes cardIn { to { opacity: 1; transform: translateY(0); } }
